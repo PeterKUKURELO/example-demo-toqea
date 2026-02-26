@@ -1,0 +1,12 @@
+[
+  {
+    "email": "admin@luqea.com",
+    "password": "Admin1234",
+    "name": "Administrador"
+  },
+  {
+    "email": "usuario@luqea.com",
+    "password": "Usuario1234",
+    "name": "Usuario Demo"
+  }
+]
