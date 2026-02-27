@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { AppProvider, useApp } from './context/AppContext';
 import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
 import { TopUp } from './pages/TopUp';
 import { SendMoney } from './pages/SendMoney';
@@ -20,6 +21,10 @@ const AppRoutes: React.FC = () => {
       <Route
         path="/"
         element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />}
+      />
+      <Route
+        path="/signup"
+        element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Signup />}
       />
       <Route
         path="/dashboard"

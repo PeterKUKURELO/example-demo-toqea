@@ -31,7 +31,7 @@ export const SendMoney: React.FC = () => {
       amount: amountValue,
       recipient: phoneNumber,
       status: 'success',
-      description: 'Money sent'
+      description: 'Dinero enviado'
     });
     updateBalance(-amountValue);
     setShowConfirmModal(false);
@@ -55,26 +55,26 @@ export const SendMoney: React.FC = () => {
             style={{ color: '#6B7280' }}
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to Dashboard</span>
+            <span>Volver al panel</span>
           </button>
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#292DD9' }}>
               <Send className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-2xl" style={{ color: '#111827' }}>Send Money</h1>
+            <h1 className="text-2xl" style={{ color: '#111827' }}>Enviar dinero</h1>
           </div>
         </div>
 
         <div className="rounded-2xl p-8 shadow-sm mb-6" style={{ backgroundColor: '#FFFFFF' }}>
           <div className="flex items-center justify-between mb-6 p-4 rounded-xl" style={{ backgroundColor: '#F7F8FA' }}>
-            <span style={{ color: '#6B7280' }}>Available Balance</span>
-            <span className="text-xl" style={{ color: '#111827' }}>${balance.toFixed(2)}</span>
+            <span style={{ color: '#6B7280' }}>Saldo disponible</span>
+            <span className="text-xl" style={{ color: '#111827' }}>S/ {balance.toFixed(2)}</span>
           </div>
 
           <div className="space-y-6">
             <div>
               <label htmlFor="recipient" className="block mb-2" style={{ color: '#111827' }}>
-                Recipient Phone Number
+                Teléfono del destinatario
               </label>
               <input
                 type="tel"
@@ -90,14 +90,14 @@ export const SendMoney: React.FC = () => {
 
             <div>
               <label htmlFor="amount" className="block mb-2" style={{ color: '#111827' }}>
-                Amount
+                Monto
               </label>
               <div className="relative">
                 <span
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-xl"
                   style={{ color: '#6B7280' }}
                 >
-                  $
+                  S/
                 </span>
                 <input
                   type="number"
@@ -125,13 +125,13 @@ export const SendMoney: React.FC = () => {
                       color: amount === value.toString() ? '#292DD9' : '#6B7280'
                     }}
                   >
-                    ${value}
+                    S/ {value}
                   </button>
                 ))}
               </div>
               {amount && parseFloat(amount) > balance && (
                 <p className="text-sm mt-2" style={{ color: '#EF4444' }}>
-                  Insufficient balance
+                  Saldo insuficiente
                 </p>
               )}
             </div>
@@ -143,7 +143,7 @@ export const SendMoney: React.FC = () => {
                 className="w-full py-3 rounded-xl text-white transition-all disabled:opacity-50 hover:shadow-lg"
                 style={{ background: 'linear-gradient(90deg, #4E07B6 0%, #292DD9 55%, #0552FA 100%)' }}
               >
-                Send Money
+                Enviar dinero
               </button>
             </div>
           </div>
@@ -153,15 +153,15 @@ export const SendMoney: React.FC = () => {
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
           <div className="w-full max-w-md rounded-2xl p-8 shadow-xl" style={{ backgroundColor: '#FFFFFF' }}>
-            <h2 className="text-xl mb-4" style={{ color: '#111827' }}>Confirm Transfer</h2>
+            <h2 className="text-xl mb-4" style={{ color: '#111827' }}>Confirmar transferencia</h2>
             <div className="space-y-3 mb-6">
               <div className="flex justify-between p-4 rounded-xl" style={{ backgroundColor: '#F7F8FA' }}>
-                <span style={{ color: '#6B7280' }}>Recipient</span>
+                <span style={{ color: '#6B7280' }}>Destinatario</span>
                 <span style={{ color: '#111827' }}>{phoneNumber}</span>
               </div>
               <div className="flex justify-between p-4 rounded-xl" style={{ backgroundColor: '#F7F8FA' }}>
-                <span style={{ color: '#6B7280' }}>Amount</span>
-                <span className="text-xl" style={{ color: '#111827' }}>${parseFloat(amount).toFixed(2)}</span>
+                <span style={{ color: '#6B7280' }}>Monto</span>
+                <span className="text-xl" style={{ color: '#111827' }}>S/ {parseFloat(amount).toFixed(2)}</span>
               </div>
             </div>
             <div className="flex gap-3">
@@ -170,14 +170,14 @@ export const SendMoney: React.FC = () => {
                 className="flex-1 py-3 rounded-xl border transition-all"
                 style={{ borderColor: '#E5E7EB', color: '#6B7280' }}
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 onClick={confirmSend}
                 className="flex-1 py-3 rounded-xl text-white transition-all"
                 style={{ background: 'linear-gradient(90deg, #4E07B6 0%, #292DD9 55%, #0552FA 100%)' }}
               >
-                Confirm
+                Confirmar
               </button>
             </div>
           </div>
@@ -190,16 +190,16 @@ export const SendMoney: React.FC = () => {
             <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F0FDF4' }}>
               <CheckCircle className="w-10 h-10" style={{ color: '#22C55E' }} />
             </div>
-            <h2 className="text-xl mb-2" style={{ color: '#111827' }}>Transfer Successful!</h2>
+            <h2 className="text-xl mb-2" style={{ color: '#111827' }}>¡Transferencia exitosa!</h2>
             <p className="mb-6" style={{ color: '#6B7280' }}>
-              ${parseFloat(amount).toFixed(2)} has been sent to {phoneNumber}
+              Se enviaron S/ {parseFloat(amount).toFixed(2)} a {phoneNumber}
             </p>
             <button
               onClick={() => navigate('/dashboard')}
               className="w-full py-3 rounded-xl text-white"
               style={{ background: 'linear-gradient(90deg, #4E07B6 0%, #292DD9 55%, #0552FA 100%)' }}
             >
-              Back to Dashboard
+              Volver al panel
             </button>
           </div>
         </div>

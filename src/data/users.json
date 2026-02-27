@@ -2,11 +2,15 @@
   {
     "email": "admin@luqea.com",
     "password": "Admin1234",
-    "name": "Administrador"
+    "firstName": "Admin",
+    "lastName": "Luqea",
+    "role": "admin"
   },
   {
     "email": "usuario@luqea.com",
-    "password": "Usuario1234",
-    "name": "Usuario Demo"
+    "password": "usuario1234",
+    "firstName": "Peter",
+    "lastName": "Kukurelo",
+    "role": "user"
   }
 ]

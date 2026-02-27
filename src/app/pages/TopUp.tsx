@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft } from 'lucide-react';
 import { PaymentModal } from '../components/PaymentModal';
-import luqeaLogo from '../../assets/imgs/LUQUEA_LOGO.svg';
+import luqeaLogo from '../../assets/imgs/luqea.png';
 
 export const TopUp: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -30,7 +30,7 @@ export const TopUp: React.FC = () => {
       type: 'topup',
       amount: amountValue,
       status: 'success',
-      description: 'Wallet top up'
+      description: 'Recarga Pay-me'
     });
     updateBalance(amountValue);
     setShowPaymentModal(false);
@@ -54,15 +54,22 @@ export const TopUp: React.FC = () => {
             style={{ color: '#6B7280' }}
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to Dashboard</span>
+            <span>Volver al panel</span>
           </button>
           <div className="flex items-center gap-3">
             <img
               src={luqeaLogo}
               alt="Luqea logo"
-              className="w-12 h-12 object-contain mix-blend-multiply"
+              className="w-14 h-14 object-contain"
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                border: '1px solid #E5E7EB',
+                padding: '7px',
+                boxShadow: '0 8px 18px rgba(15, 23, 42, 0.12)'
+              }}
             />
-            <h1 className="text-2xl" style={{ color: '#111827' }}>Top Up Wallet</h1>
+            <h1 className="text-2xl" style={{ color: '#111827' }}>Recargar billetera</h1>
           </div>
         </div>
 
@@ -70,7 +77,7 @@ export const TopUp: React.FC = () => {
           <div className="space-y-6">
             <div>
               <label htmlFor="phone" className="block mb-2" style={{ color: '#111827' }}>
-                Phone Number
+                Número de teléfono
               </label>
               <input
                 type="tel"
@@ -83,20 +90,20 @@ export const TopUp: React.FC = () => {
                 maxLength={12}
               />
               <p className="text-sm mt-2" style={{ color: '#6B7280' }}>
-                Enter your registered phone number
+                Ingresa tu número de teléfono registrado
               </p>
             </div>
 
             <div>
               <label htmlFor="amount" className="block mb-2" style={{ color: '#111827' }}>
-                Amount
+                Monto
               </label>
               <div className="relative">
                 <span
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-xl"
                   style={{ color: '#6B7280' }}
                 >
-                  $
+                  S/
                 </span>
                 <input
                   type="number"
@@ -122,7 +129,7 @@ export const TopUp: React.FC = () => {
                       color: amount === value.toString() ? '#292DD9' : '#6B7280'
                     }}
                   >
-                    ${value}
+                    S/ {value}
                   </button>
                 ))}
               </div>
@@ -135,7 +142,7 @@ export const TopUp: React.FC = () => {
                 className="w-full py-3 rounded-xl text-white transition-all disabled:opacity-50 hover:shadow-lg"
                 style={{ background: 'linear-gradient(90deg, #4E07B6 0%, #292DD9 55%, #0552FA 100%)' }}
               >
-                Continue to Payment
+                Continuar al pago
               </button>
             </div>
           </div>
@@ -143,7 +150,7 @@ export const TopUp: React.FC = () => {
 
         <div className="mt-6 p-6 rounded-2xl" style={{ backgroundColor: '#EEF0FF' }}>
           <p className="text-sm" style={{ color: '#1E3A8A' }}>
-            <strong>Note:</strong> You will be redirected to a secure payment gateway to complete your top-up. All transactions are encrypted and secure.
+            <strong>Nota:</strong> Serás redirigido a una pasarela de pago segura para completar tu recarga. Todas las transacciones están cifradas y son seguras.
           </p>
         </div>
       </div>

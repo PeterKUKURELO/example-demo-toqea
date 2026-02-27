@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import { ArrowUpRight, ArrowDownLeft, History, LogOut } from 'lucide-react';
-import luqeaLogo from '../../assets/imgs/LUQUEA_LOGO.svg';
+import luqeaLogo from '../../assets/imgs/luqea.png';
 
 export const Dashboard: React.FC = () => {
-  const { balance, transactions, userEmail, logout } = useApp();
+  const { balance, transactions, userEmail, userName, logout } = useApp();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -46,6 +46,19 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'success':
+        return 'exitosa';
+      case 'pending':
+        return 'pendiente';
+      case 'failed':
+        return 'fallida';
+      default:
+        return status;
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F7F8FA' }}>
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -54,11 +67,18 @@ export const Dashboard: React.FC = () => {
             <img
               src={luqeaLogo}
               alt="Luqea logo"
-              className="w-12 h-12 object-contain mix-blend-multiply"
+              className="w-14 h-14 object-contain"
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                border: '1px solid #E5E7EB',
+                padding: '7px',
+                boxShadow: '0 8px 18px rgba(15, 23, 42, 0.12)'
+              }}
             />
             <div>
-              <h1 className="text-2xl" style={{ color: '#111827' }}>My Wallet</h1>
-              <p className="text-sm" style={{ color: '#6B7280' }}>{userEmail}</p>
+              <h1 className="text-2xl" style={{ color: '#111827' }}>Mi Billetera</h1>
+              <p className="text-sm" style={{ color: '#6B7280' }}>{userName || userEmail}</p>
             </div>
           </div>
           <button
@@ -67,17 +87,31 @@ export const Dashboard: React.FC = () => {
             style={{ borderColor: '#E5E7EB', backgroundColor: '#FFFFFF', color: '#6B7280' }}
           >
             <LogOut className="w-4 h-4" />
-            <span>Logout</span>
+            <span>Cerrar sesión</span>
           </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div
-            className="lg:col-span-2 rounded-2xl p-8 shadow-sm"
+            className="lg:col-span-2 rounded-2xl p-8 shadow-sm relative overflow-hidden"
             style={{ background: 'linear-gradient(120deg, #4E07B6 0%, #292DD9 50%, #0552FA 100%)' }}
           >
-            <p className="text-white/80 mb-2">Total Balance</p>
-            <h2 className="text-5xl text-white mb-8">${balance.toFixed(2)}</h2>
+            <div
+              className="absolute right-6 top-4 opacity-20 pointer-events-none"
+              aria-hidden
+            >
+              <svg
+                viewBox="0 0 256 256"
+                className="w-48 h-48"
+                fill="none"
+              >
+                <rect x="28" y="64" width="200" height="136" rx="24" stroke="white" strokeWidth="16" />
+                <path d="M188 104h28a12 12 0 0 1 12 12v32a12 12 0 0 1-12 12h-28" stroke="white" strokeWidth="16" />
+                <circle cx="184" cy="132" r="8" fill="white" />
+              </svg>
+            </div>
+            <p className="text-white/80 mb-2">Saldo total</p>
+            <h2 className="text-5xl text-white mb-8">S/ {balance.toFixed(2)}</h2>
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => navigate('/topup')}
@@ -85,7 +119,7 @@ export const Dashboard: React.FC = () => {
                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
               >
                 <ArrowDownLeft className="w-5 h-5" />
-                <span>Top Up</span>
+                <span>Recargar</span>
               </button>
               <button
                 onClick={() => navigate('/send')}
@@ -93,14 +127,14 @@ export const Dashboard: React.FC = () => {
                 style={{ backgroundColor: '#FFFFFF', color: '#292DD9' }}
               >
                 <ArrowUpRight className="w-5 h-5" />
-                <span>Send Money</span>
+                <span>Enviar dinero</span>
               </button>
             </div>
           </div>
 
           <div className="rounded-2xl p-6 shadow-sm flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
             <div className="flex items-center justify-between mb-4">
-              <h3 style={{ color: '#111827' }}>Quick Actions</h3>
+              <h3 style={{ color: '#111827' }}>Acciones rápidas</h3>
             </div>
             <div className="space-y-3 flex-1">
               <button
@@ -112,8 +146,8 @@ export const Dashboard: React.FC = () => {
                   <History className="w-5 h-5" style={{ color: '#292DD9' }} />
                 </div>
                 <div className="flex-1 text-left">
-                  <p style={{ color: '#111827' }}>Transaction History</p>
-                  <p className="text-sm" style={{ color: '#6B7280' }}>View all transactions</p>
+                  <p style={{ color: '#111827' }}>Historial de transacciones</p>
+                  <p className="text-sm" style={{ color: '#6B7280' }}>Ver todas las transacciones</p>
                 </div>
               </button>
             </div>
@@ -122,18 +156,18 @@ export const Dashboard: React.FC = () => {
 
         <div className="rounded-2xl p-6 shadow-sm" style={{ backgroundColor: '#FFFFFF' }}>
           <div className="flex items-center justify-between mb-6">
-            <h3 style={{ color: '#111827' }}>Recent Transactions</h3>
+            <h3 style={{ color: '#111827' }}>Transacciones recientes</h3>
             <button
               onClick={() => navigate('/history')}
               className="text-sm transition-all"
               style={{ color: '#292DD9' }}
             >
-              View All
+              Ver todo
             </button>
           </div>
 
           {recentTransactions.length === 0 ? (
-            <p className="text-center py-8" style={{ color: '#6B7280' }}>No transactions yet</p>
+            <p className="text-center py-8" style={{ color: '#6B7280' }}>Aún no hay transacciones</p>
           ) : (
             <div className="space-y-3">
               {recentTransactions.map((transaction) => (
@@ -169,7 +203,7 @@ export const Dashboard: React.FC = () => {
                           color: transaction.type === 'send' ? '#EF4444' : '#22C55E'
                         }}
                       >
-                        {transaction.type === 'send' ? '-' : '+'}${transaction.amount.toFixed(2)}
+                        {transaction.type === 'send' ? '-' : '+'}S/ {transaction.amount.toFixed(2)}
                       </p>
                       <div className="flex justify-end mt-1">
                         <span
@@ -179,7 +213,7 @@ export const Dashboard: React.FC = () => {
                             backgroundColor: getStatusBgColor(transaction.status)
                           }}
                         >
-                          {transaction.status}
+                          {getStatusLabel(transaction.status)}
                         </span>
                       </div>
                     </div>

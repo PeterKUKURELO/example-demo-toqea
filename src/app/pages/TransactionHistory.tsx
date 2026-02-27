@@ -20,11 +20,11 @@ export const TransactionHistory: React.FC = () => {
     const isYesterday = date.toDateString() === yesterday.toDateString();
 
     if (isToday) {
-      return `Today, ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+      return `Hoy, ${date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`;
     } else if (isYesterday) {
-      return `Yesterday, ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+      return `Ayer, ${date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`;
     } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
   };
 
@@ -51,6 +51,19 @@ export const TransactionHistory: React.FC = () => {
         return '#FEF2F2';
       default:
         return '#F7F8FA';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'success':
+        return 'exitosa';
+      case 'pending':
+        return 'pendiente';
+      case 'failed':
+        return 'fallida';
+      default:
+        return status;
     }
   };
 
@@ -83,11 +96,11 @@ export const TransactionHistory: React.FC = () => {
     yesterday.setDate(yesterday.getDate() - 1);
 
     if (date.toDateString() === today.toDateString()) {
-      return 'Today';
+      return 'Hoy';
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday';
+      return 'Ayer';
     } else {
-      return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      return date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' });
     }
   };
 
@@ -101,9 +114,9 @@ export const TransactionHistory: React.FC = () => {
             style={{ color: '#6B7280' }}
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to Dashboard</span>
+            <span>Volver al panel</span>
           </button>
-          <h1 className="text-2xl" style={{ color: '#111827' }}>Transaction History</h1>
+          <h1 className="text-2xl" style={{ color: '#111827' }}>Historial de transacciones</h1>
         </div>
 
         <div className="rounded-2xl p-6 shadow-sm mb-6" style={{ backgroundColor: '#FFFFFF' }}>
@@ -116,7 +129,7 @@ export const TransactionHistory: React.FC = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl border outline-none focus:ring-2"
                 style={{ borderColor: '#E5E7EB', color: '#111827' }}
-                placeholder="Search transactions..."
+                placeholder="Buscar transacciones..."
               />
             </div>
             <div className="flex gap-3">
@@ -126,10 +139,10 @@ export const TransactionHistory: React.FC = () => {
                 className="px-4 py-3 rounded-xl border outline-none focus:ring-2"
                 style={{ borderColor: '#E5E7EB', color: '#111827', backgroundColor: '#FFFFFF' }}
               >
-                <option value="all">All Types</option>
-                <option value="topup">Top Up</option>
-                <option value="send">Sent</option>
-                <option value="receive">Received</option>
+                <option value="all">Todos los tipos</option>
+                <option value="topup">Recarga</option>
+                <option value="send">Enviadas</option>
+                <option value="receive">Recibidas</option>
               </select>
               <select
                 value={filterStatus}
@@ -137,10 +150,10 @@ export const TransactionHistory: React.FC = () => {
                 className="px-4 py-3 rounded-xl border outline-none focus:ring-2"
                 style={{ borderColor: '#E5E7EB', color: '#111827', backgroundColor: '#FFFFFF' }}
               >
-                <option value="all">All Status</option>
-                <option value="success">Success</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
+                <option value="all">Todos los estados</option>
+                <option value="success">Exitosas</option>
+                <option value="pending">Pendientes</option>
+                <option value="failed">Fallidas</option>
               </select>
             </div>
           </div>
@@ -148,7 +161,7 @@ export const TransactionHistory: React.FC = () => {
 
         {Object.keys(groupedTransactions).length === 0 ? (
           <div className="rounded-2xl p-12 text-center shadow-sm" style={{ backgroundColor: '#FFFFFF' }}>
-            <p style={{ color: '#6B7280' }}>No transactions found</p>
+            <p style={{ color: '#6B7280' }}>No se encontraron transacciones</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -184,12 +197,12 @@ export const TransactionHistory: React.FC = () => {
                             </p>
                             {transaction.recipient && (
                               <p className="text-sm" style={{ color: '#6B7280' }}>
-                                To: {transaction.recipient}
+                                Para: {transaction.recipient}
                               </p>
                             )}
                             {transaction.sender && (
                               <p className="text-sm" style={{ color: '#6B7280' }}>
-                                From: {transaction.sender}
+                                De: {transaction.sender}
                               </p>
                             )}
                           </div>
@@ -201,7 +214,7 @@ export const TransactionHistory: React.FC = () => {
                               color: transaction.type === 'send' ? '#EF4444' : '#22C55E'
                             }}
                           >
-                            {transaction.type === 'send' ? '-' : '+'}${transaction.amount.toFixed(2)}
+                            {transaction.type === 'send' ? '-' : '+'}S/ {transaction.amount.toFixed(2)}
                           </p>
                           <span
                             className="text-xs px-3 py-1 rounded-lg capitalize"
@@ -210,7 +223,7 @@ export const TransactionHistory: React.FC = () => {
                               backgroundColor: getStatusBgColor(transaction.status)
                             }}
                           >
-                            {transaction.status}
+                            {getStatusLabel(transaction.status)}
                           </span>
                         </div>
                       </div>

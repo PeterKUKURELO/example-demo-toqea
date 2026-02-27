@@ -1,0 +1,18 @@
+.flex-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#payme-flex-root .payment-method-form-wrapper,
+#payme-flex-root .payment-method-wrapper {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

@@ -1,29 +1,43 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
-import luqeaLogo from '../../assets/imgs/LUQUEA_LOGO.svg';
+import luqeaLogo from '../../assets/imgs/luqea.png';
 
-export const Login: React.FC = () => {
+export const Signup: React.FC = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useApp();
+  const { registerUser } = useApp();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError('Ingresa tu correo y contraseña.');
+
+    if (!name || !email || !password || !confirmPassword) {
+      setError('Completa todos los campos.');
       return;
     }
 
-    const isValid = login(email, password);
-    if (isValid) {
-      setError('');
-      navigate('/dashboard');
-    } else {
-      setError('Correo o contraseña incorrectos.');
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
     }
+
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      return;
+    }
+
+    const result = registerUser(name, email, password);
+    if (!result.ok) {
+      setError(result.message || 'No se pudo crear la cuenta.');
+      return;
+    }
+
+    setError('');
+    navigate('/dashboard');
   };
 
   return (
@@ -38,21 +52,27 @@ export const Login: React.FC = () => {
       }}
     >
       <div className="w-full max-w-md">
-        <div className="text-center mt-8">
+        <div className="flex justify-center mt-8">
           <img
             src={luqeaLogo}
             alt="Luqea logo"
-            className="w-56 h-56 object-contain mx-auto -mt-16 -mb-16"
-            style={{ filter: 'drop-shadow(0 10px 20px rgba(0, 0, 0, 0.22))' }}
+            className="w-14 h-14 object-contain"
+            style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '16px',
+              border: '1px solid #E5E7EB',
+              padding: '7px',
+              boxShadow: '0 8px 18px rgba(15, 23, 42, 0.12)'
+            }}
           />
         </div>
 
         <div className="text-center mt-8 mb-8">
           <h1 className="text-4xl mt-4 mb-2" style={{ color: '#FFFFFF' }}>
-            Inicio de sesión
+            Crear cuenta
           </h1>
           <p className="text-lg" style={{ color: '#CFE6FF' }}>
-            Ingresa a tu billetera digital
+            Regístrate para usar tu billetera digital
           </p>
         </div>
 
@@ -64,7 +84,7 @@ export const Login: React.FC = () => {
             boxShadow: '0 20px 50px rgba(5, 8, 41, 0.35)'
           }}
         >
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div
                 className="rounded-xl px-4 py-3 text-sm"
@@ -74,6 +94,29 @@ export const Login: React.FC = () => {
                 {error}
               </div>
             )}
+
+            <div>
+              <label htmlFor="name" className="block mb-2 text-lg" style={{ color: '#192041' }}>
+                Nombre completo
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (error) setError('');
+                }}
+                className="w-full px-4 py-3 rounded-xl border outline-none focus:ring-2 transition-all text-lg"
+                style={{
+                  borderColor: '#BECAF8',
+                  backgroundColor: '#FFFFFF'
+                }}
+                placeholder="Tu nombre"
+                required
+              />
+            </div>
+
             <div>
               <label htmlFor="email" className="block mb-2 text-lg" style={{ color: '#192041' }}>
                 Correo
@@ -113,7 +156,29 @@ export const Login: React.FC = () => {
                   borderColor: '#BECAF8',
                   backgroundColor: '#FFFFFF'
                 }}
-                placeholder="Ingresa tu contraseña"
+                placeholder="Crea una contraseña"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block mb-2 text-lg" style={{ color: '#192041' }}>
+                Confirmar contraseña
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  if (error) setError('');
+                }}
+                className="w-full px-4 py-3 rounded-xl border outline-none focus:ring-2 transition-all text-lg"
+                style={{
+                  borderColor: '#BECAF8',
+                  backgroundColor: '#FFFFFF'
+                }}
+                placeholder="Repite la contraseña"
                 required
               />
             </div>
@@ -128,22 +193,21 @@ export const Login: React.FC = () => {
               onMouseEnter={(e) => (e.currentTarget.style.filter = 'brightness(1.05)')}
               onMouseLeave={(e) => (e.currentTarget.style.filter = 'brightness(1)')}
             >
-              Iniciar sesión
+              Crear cuenta
             </button>
 
             <div className="text-center">
               <button
                 type="button"
-                onClick={() => navigate('/signup')}
+                onClick={() => navigate('/')}
                 className="transition-all text-lg"
                 style={{ color: '#125EFF' }}
               >
-                Crear cuenta
+                Ya tengo cuenta
               </button>
             </div>
           </form>
         </div>
-
       </div>
     </div>
   );
